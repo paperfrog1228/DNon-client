@@ -2,27 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-
-// Use plugin namespace
 using HybridWebSocket;
+using Sirenix;
+using Sirenix.OdinInspector;
 
 public class WebSocketDemo : MonoBehaviour {
-
-	// Use this for initialization
+    [SerializeField] string url="ws://localhost:1228";
+    WebSocket ws;
 	void Start () {
-
-        // Create WebSocket instance
-        WebSocket ws = WebSocketFactory.CreateInstance("ws://localhost:1228");
-
-        // Add OnOpen event listener
+        ws = WebSocketFactory.CreateInstance(url);
         ws.OnOpen += () =>
         {
             Debug.Log("WS connected!");
             Debug.Log("WS state: " + ws.GetState().ToString());
-
-            ws.Send(Encoding.UTF8.GetBytes("Hello from Unity 3D!"));
+            
+           
         };
-
         // Add OnMessage event listener
         ws.OnMessage += (byte[] msg) =>
         {
@@ -31,25 +26,34 @@ public class WebSocketDemo : MonoBehaviour {
             ws.Close();
         };
 
-        // Add OnError event listener
         ws.OnError += (string errMsg) =>
         {
             Debug.Log("WS error: " + errMsg);
         };
 
-        // Add OnClose event listener
+
         ws.OnClose += (WebSocketCloseCode code) =>
         {
             Debug.Log("WS closed with code: " + code.ToString());
         };
-
-        // Connect to the server
         ws.Connect();
 
     }
-	
-	// Update is called once per frame
+    [Button]
+    public void Test(){
+        JsonBase data = new JsonBase("test");
+        data.AddMessage("에잇 씨팔!!");
+        ws.Send(Encoding.UTF8.GetBytes(ObjectToJson(data)));
+      }
 	void Update () {
-		
+		//ws.Send(Encoding.UTF8.GetBytes("test"));
 	}
+    string ObjectToJson(object obj)
+    {
+        return JsonUtility.ToJson(obj);
+    }
+    T JsonToOject<T>(string jsonData)
+    {
+        return JsonUtility.FromJson<T>(jsonData);
+    }
 }

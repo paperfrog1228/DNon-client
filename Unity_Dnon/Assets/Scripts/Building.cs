@@ -7,13 +7,11 @@ public class Building : MonoBehaviour
     [SerializeField] GameObject player;
     BoxCollider2D colider;
     float heieght, width;
-
     private void Start()
     {
         colider = GetComponent<BoxCollider2D>();
         heieght = colider.size.y * gameObject.transform.localScale.y;
         width = colider.size.x * gameObject.transform.localScale.x;
-        Debug.Log(heieght + "  " + width);
     }
     bool CheckInPlayer()
     {// 건물 안에 플레이어가 있는지 체크함.
