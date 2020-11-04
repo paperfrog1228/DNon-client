@@ -15,16 +15,19 @@ public class WebSocketDemo : MonoBehaviour {
         {
             Debug.Log("WS connected!");
             Debug.Log("WS state: " + ws.GetState().ToString());
-            
-           
         };
-        // Add OnMessage event listener
+
         ws.OnMessage += (byte[] msg) =>
         {
             Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
-
-            ws.Close();
-        };
+            string msg_str = Encoding.UTF8.GetString(msg);
+            var json = JsonToObject<JsonBase>(msg_str);
+            switch (json.eventName) {
+                case "connected":
+                    Connected(msg_str);
+                    break;
+            }
+         };
 
         ws.OnError += (string errMsg) =>
         {
@@ -39,21 +42,31 @@ public class WebSocketDemo : MonoBehaviour {
         ws.Connect();
 
     }
-    [Button]
+        [Button]
     public void Test(){
         JsonBase data = new JsonBase("test");
-        data.AddMessage("에잇 씨팔!!");
+       // data.AddMessage(ws.);
         ws.Send(Encoding.UTF8.GetBytes(ObjectToJson(data)));
       }
-	void Update () {
-		//ws.Send(Encoding.UTF8.GetBytes("test"));
-	}
-    string ObjectToJson(object obj)
+    void Connected(string js) {
+        var json = JsonToObject<JsonBase>(js);
+        Debug.Log(json.data);
+        JsonBase data = new JsonBase("socketID");
+        data.Adddata("socketID: 1234");
+        ws.Send(GetByte(data));
+    }
+	    string ObjectToJson(object obj)
     {
         return JsonUtility.ToJson(obj);
     }
-    T JsonToOject<T>(string jsonData)
+    T JsonToObject<T>(string jsonData)
     {
         return JsonUtility.FromJson<T>(jsonData);
+    }
+    byte[] GetByte(string s) {
+        return Encoding.UTF8.GetBytes(s);
+    }
+    byte[] GetByte(JsonBase j) { 
+        return Encoding.UTF8.GetBytes(ObjectToJson(j));
     }
 }
