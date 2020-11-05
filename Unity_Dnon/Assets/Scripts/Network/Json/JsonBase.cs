@@ -6,9 +6,11 @@ using UnityEngine;
 /// </summary>
 public class JsonBase{
     public string eventName="";
+    public string socketID;
     public string data="";
     public JsonBase(string name) {
         eventName = name;
+        socketID =WebSocketDemo.Instance().socketID;
     }
     public void Adddata(string msg)
     {

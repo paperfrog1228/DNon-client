@@ -7,9 +7,17 @@ using Sirenix;
 using Sirenix.OdinInspector;
 
 public class WebSocketDemo : MonoBehaviour {
+    private static WebSocketDemo instance;
     [SerializeField] string url="ws://localhost:1228";
     WebSocket ws;
-	void Start () {
+    bool connected = false;
+    [SerializeField]
+    public string socketID = "1234";
+    private void Awake()
+    {
+        instance = this;
+    }
+    void Start () {
         ws = WebSocketFactory.CreateInstance(url);
         ws.OnOpen += () =>
         {
@@ -42,20 +50,25 @@ public class WebSocketDemo : MonoBehaviour {
         ws.Connect();
 
     }
-        [Button]
-    public void Test(){
-        JsonBase data = new JsonBase("test");
-       // data.AddMessage(ws.);
-        ws.Send(Encoding.UTF8.GetBytes(ObjectToJson(data)));
-      }
+    private void SendPos() {
+        var json = new JsonPosition("position");
+        json.SetPos(Player.Instance().gameObject.transform.position);
+        ws.Send(GetByte(json));
+    }
+    private void Update()
+    {
+        if (!connected) return;
+        SendPos();
+    }
     void Connected(string js) {
+        connected = true;
         var json = JsonToObject<JsonBase>(js);
         Debug.Log(json.data);
         JsonBase data = new JsonBase("socketID");
-        data.Adddata("socketID: 1234");
         ws.Send(GetByte(data));
     }
-	    string ObjectToJson(object obj)
+    
+	string ObjectToJson(object obj)
     {
         return JsonUtility.ToJson(obj);
     }
@@ -68,5 +81,8 @@ public class WebSocketDemo : MonoBehaviour {
     }
     byte[] GetByte(JsonBase j) { 
         return Encoding.UTF8.GetBytes(ObjectToJson(j));
+    }
+    public static WebSocketDemo Instance() {
+        return instance;
     }
 }
