@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Player : MonoBehaviour
+public class Player : User
 {
     private static Player instance = null;
     [SerializeField,Range(0,30)]
@@ -17,7 +17,9 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
         transform.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
     }
-
+    public int GetPlayerSocketID() {
+        return socketID;
+    }
     public static Player Instance()
     {
         return instance;

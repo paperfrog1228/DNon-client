@@ -5,6 +5,7 @@ using UnityEngine;
 using HybridWebSocket;
 using Sirenix;
 using Sirenix.OdinInspector;
+using System;
 
 public class WebSocketDemo : MonoBehaviour {
     private static WebSocketDemo instance;
@@ -13,9 +14,12 @@ public class WebSocketDemo : MonoBehaviour {
     bool connected = false;
     [SerializeField]
     public string socketID = "1234";
+    System.Random r=new System.Random();
     private void Awake()
     {
         instance = this;
+        socketID = r.Next(1, 100).ToString();
+        Debug.Log("My socket id is " + socketID);
     }
     void Start () {
         ws = WebSocketFactory.CreateInstance(url);
@@ -29,10 +33,13 @@ public class WebSocketDemo : MonoBehaviour {
         {
             Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
             string msg_str = Encoding.UTF8.GetString(msg);
-            var json = JsonToObject<JsonBase>(msg_str);
+            var json = JsonToObject<JsonCommon>(msg_str);
             switch (json.eventName) {
                 case "connected":
                     Connected(msg_str);
+                    break;
+                case "otherPosition":
+                    OtherPosition(msg_str);
                     break;
             }
          };
@@ -50,20 +57,24 @@ public class WebSocketDemo : MonoBehaviour {
         ws.Connect();
 
     }
-    private void SendPos() {
+
+    public void SendPos() {
         var json = new JsonPosition("position");
         json.SetPos(Player.Instance().gameObject.transform.position);
         ws.Send(GetByte(json));
     }
     private void Update()
     {
-        if (!connected) return;
-        SendPos();
+        //if (!connected) return;
+        //SendPos();
+    }
+    void OtherPosition(string js) {
+        var json = JsonToObject<JsonPosition>(js);
+        OtherUserManager.Instance().SetUserPos(Int32.Parse(json.socketID), new Vector2(json.x, json.y));
     }
     void Connected(string js) {
         connected = true;
         var json = JsonToObject<JsonBase>(js);
-        Debug.Log(json.data);
         JsonBase data = new JsonBase("socketID");
         ws.Send(GetByte(data));
     }
