@@ -7,7 +7,7 @@ public class JsonBase{
     public string data="";
     public JsonBase(string name) {
         eventName = name;
-        socketID =WebSocketDemo.Instance().socketID;
+        socketID = NetworkManager.Instance().socketID;
     }
     public void Adddata(string msg)
     {
