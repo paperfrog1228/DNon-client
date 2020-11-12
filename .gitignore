@@ -70,3 +70,6 @@ crashlytics-build.properties
 # node.js
 node_modules
 *.log
+Assets/Plugins/RestClient/DemoScene.meta
+
+Assets/Plugins/RestClient/DemoScene/
