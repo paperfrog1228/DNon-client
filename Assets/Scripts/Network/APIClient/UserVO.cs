@@ -2,17 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserVO : MonoBehaviour
+[System.Serializable]
+public class UserVO
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /// <summary>
+    /// User identifier
+    /// </summary>
+    public int userId;
+    /// <summary>
+    /// User name
+    /// </summary>
+    public string userName;
+    /// <summary>
+    /// User email, for login
+    /// </summary>
+    public string email;
+    /// <summary>
+    /// User password, for login
+    /// </summary>
+    public string userPassword;
+    /// <summary>
+    /// The date user registered
+    /// </summary>
+    public string dateRegistered;
 }

@@ -21,13 +21,13 @@ public class ChannelList : MonoBehaviour
 
     public void RefreshChannelList()
     {
+        foreach (Transform child in channelListContent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
         APIClient.GetClient().GetChannelList().Then(channels =>
         {
-            foreach (Transform child in channelListContent.transform)
-            {
-                GameObject.Destroy(child.gameObject);
-            }
-
             foreach (ChannelVO channel in channels)
             {
                 GameObject newItem = Instantiate(channelItem);
@@ -38,10 +38,4 @@ public class ChannelList : MonoBehaviour
             }
         });
     }
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
 }
