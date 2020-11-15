@@ -512,6 +512,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
+    1: ODIN_INSPECTOR
     13: ODIN_INSPECTOR
   platformArchitecture: {}
   scriptingBackend: {}

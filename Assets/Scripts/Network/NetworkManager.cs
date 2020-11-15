@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class NetworkManager : MonoBehaviour
 { 
     [SerializeField] string url="wws://localhost:1228";
-    [SerializeField] public string socketID = "1234";
+    [SerializeField] public int socketID = 9999;
     public bool onConnect=false;
     System.Random r=new System.Random();
     WebSocketManager webSocketManager;
@@ -19,10 +19,9 @@ public class NetworkManager : MonoBehaviour
     public void Connect() {
         webSocketManager.Connect(url);
     }
-
     void OtherPosition(string js) {
         var json = jsonManager.JsonToObject<JsonPosition>(js);
-        OtherUserManager.Instance().SetUserPos(Int32.Parse(json.socketID), new Vector2(json.x, json.y));
+        OtherUserManager.Instance().SetUserPos(json.socketID, new Vector2(json.x, json.y));
     }
     public void Connected(string js) {
         Debug.Log("Connect Allow.");
@@ -44,8 +43,10 @@ public class NetworkManager : MonoBehaviour
             OtherPosition(msg_str);
         break;
         case "initOtherPlayer":
+            InitOtherPlayer(msg_str);
+        break;
+            case "notifyNewPlayer":
                 InitOtherPlayer(msg_str);
-
                 break;
         }
     }
@@ -53,7 +54,7 @@ public class NetworkManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        socketID = r.Next(1, 100).ToString();
+        socketID = r.Next(1, 100);
      
         Debug.Log("My socket id is " + socketID);
     }

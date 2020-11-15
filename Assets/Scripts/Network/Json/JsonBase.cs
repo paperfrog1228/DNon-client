@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class JsonBase{
     public string eventName="";
-    public string socketID;
+    public int socketID;
     public string data="";
     public JsonBase(string name) {
         eventName = name;
