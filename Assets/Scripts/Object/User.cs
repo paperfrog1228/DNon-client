@@ -5,14 +5,7 @@ using UnityEngine;
 public class User : MonoBehaviour
 {
     public int SocketID;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SetPosition(Vector2 vec) {
+        this.gameObject.transform.position=new Vector3(vec.x, vec.y, -10);
     }
 }

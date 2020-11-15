@@ -17,8 +17,9 @@ public class OtherUserManager : MonoBehaviour
         instance = this;
     }
     [Button]
-    public void JoinUser(int socketID)
+    public void InitUser(int socketID)
     {
+        Debug.Log(socketID+"입장.");
         var user = Instantiate(Resources.Load("Prefab/User")) as GameObject;
         var cUser = user.GetComponent<User>();
         cUser.SocketID = socketID;
@@ -29,7 +30,7 @@ public class OtherUserManager : MonoBehaviour
     public void SetUserPos(int socketID, Vector2 vec) {
         if (socketID == System.Int32.Parse(NetworkManager.Instance().socketID)) return;
         Debug.Log("상대의 위치는 : " + vec);
-      //  userDic[socketID].SetPosition(vec);
+        userDic[socketID].SetPosition(vec);
     }
     public static OtherUserManager Instance() {
         return instance;
