@@ -15,9 +15,9 @@ public class NetworkManager : MonoBehaviour
     JsonManager jsonManager;
     JsonBase requestJson;
     [SerializeField] Text test;
-    public void Test() { 
-    
+    public void Test() {       
         JsonBase data = new JsonBase("socketID");
+
         webSocketManager.SendMsg(data);
       }
     public void Connect() {

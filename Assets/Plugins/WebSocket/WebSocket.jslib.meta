@@ -12,6 +12,20 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
+<<<<<<< HEAD
+      : Any
+    second:
+      enabled: 0
+      settings:
+        Exclude Editor: 0
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 1
+        Exclude WebGL: 0
+        Exclude Win: 1
+        Exclude Win64: 1
+  - first:
+=======
+>>>>>>> develop
       Any: 
     second:
       enabled: 0
@@ -19,9 +33,41 @@ PluginImporter:
   - first:
       Editor: Editor
     second:
+<<<<<<< HEAD
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+        DefaultValueInitialized: true
+        OS: AnyOS
+  - first:
+      Standalone: Linux64
+    second:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+  - first:
+      Standalone: OSXUniversal
+    second:
+      enabled: 0
+      settings:
+        CPU: x86_64
+  - first:
+      Standalone: Win
+    second:
+      enabled: 0
+      settings:
+        CPU: x86
+  - first:
+      Standalone: Win64
+    second:
+      enabled: 0
+      settings:
+        CPU: x86_64
+=======
       enabled: 0
       settings:
         DefaultValueInitialized: true
+>>>>>>> develop
   - first:
       WebGL: WebGL
     second:
