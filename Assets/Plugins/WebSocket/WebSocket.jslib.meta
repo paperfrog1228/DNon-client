@@ -12,6 +12,7 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
+<<<<<<< HEAD
       : Any
     second:
       enabled: 0
@@ -23,6 +24,8 @@ PluginImporter:
         Exclude Win: 1
         Exclude Win64: 1
   - first:
+=======
+>>>>>>> develop
       Any: 
     second:
       enabled: 0
@@ -30,6 +33,7 @@ PluginImporter:
   - first:
       Editor: Editor
     second:
+<<<<<<< HEAD
       enabled: 1
       settings:
         CPU: AnyCPU
@@ -59,6 +63,11 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: x86_64
+=======
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true
+>>>>>>> develop
   - first:
       WebGL: WebGL
     second:

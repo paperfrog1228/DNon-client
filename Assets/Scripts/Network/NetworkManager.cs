@@ -3,16 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+<<<<<<< HEAD
 public class NetworkManager : MonoBehaviour
 { 
     [SerializeField] string url="ws://localhost:1228";
+=======
+using UnityEngine.UI;
+
+public class NetworkManager : MonoBehaviour
+{ 
+    [SerializeField] string url="wws://localhost:1228";
+>>>>>>> develop
     [SerializeField] public string socketID = "1234";
     public bool onConnect=false;
     System.Random r=new System.Random();
     WebSocketManager webSocketManager;
     JsonManager jsonManager;
     JsonBase requestJson;
+<<<<<<< HEAD
     public void Test() { 
+=======
+    [SerializeField] Text test;
+    public void Test() { 
+    
+>>>>>>> develop
         JsonBase data = new JsonBase("socketID");
         webSocketManager.SendMsg(data);
       }
