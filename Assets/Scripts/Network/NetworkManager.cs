@@ -12,10 +12,6 @@ public class NetworkManager : MonoBehaviour
     System.Random r=new System.Random();
     WebSocketManager webSocketManager;
     JsonManager jsonManager;
-     public void Test() {       
-        JsonBase data = new JsonBase("socketID");
-        webSocketManager.SendMsg(data);
-      }
     public void Connect() {
         webSocketManager.Connect(url);
     }
@@ -26,8 +22,8 @@ public class NetworkManager : MonoBehaviour
     public void Connected(string js) {
         Debug.Log("Connect Allow.");
         onConnect = true;
-        var json = jsonManager.JsonToObject<JsonBase>(js);
-        JsonBase data = new JsonBase("socketID");
+        JsonPlayer data = new JsonPlayer("join");
+        data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
         webSocketManager.SendMsg(data);
         StartCoroutine("SendPosCoroutine",0.3f);
     }
@@ -55,7 +51,6 @@ public class NetworkManager : MonoBehaviour
     {
         instance = this;
         socketID = r.Next(1, 100);
-     
         Debug.Log("My socket id is " + socketID);
     }
 
@@ -70,7 +65,6 @@ public class NetworkManager : MonoBehaviour
         OtherUserManager.Instance().InitUser(Int32.Parse(json.data));
     }
     void SendPos() {
-        //Debug.Log("보낸다!");
         var json = new JsonPosition("position");
         json.SetPos(Player.Instance().gameObject.transform.position);
         webSocketManager.SendMsg(json);

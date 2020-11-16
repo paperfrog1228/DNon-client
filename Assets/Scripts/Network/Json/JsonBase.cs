@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// JSON 역직렬화 시 해당하는 변수 없으면 에러 나기 때문에 모든 JSON 파일의 변수를 담고 있는 Base 클래스입니다.
+/// 간단한 정보를 보낼 때 사용하며
+/// 필수적인 이벤트 네임과 소켓id, 보낼 데이터를 문자열로 하여 보낸다.
 /// </summary>
 public class JsonBase{
     public string eventName="";
