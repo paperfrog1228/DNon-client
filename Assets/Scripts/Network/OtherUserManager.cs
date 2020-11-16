@@ -27,10 +27,9 @@ public class OtherUserManager : MonoBehaviour
         userList.Add(cUser);
         userDic[socketID] = cUser;
     }
-    //todo : string이 좋으려나 int가 좋으려나
     public void SetUserPos(int socketID, Vector2 vec) {
         if (socketID == NetworkManager.Instance().socketID) return;
-        Debug.Log("상대의 위치는 : " + vec);
+        //Debug.Log(socketID+"번 상대의 위치는 : " + vec);
         userDic[socketID].SetPosition(vec);
     }
     public static OtherUserManager Instance() {
