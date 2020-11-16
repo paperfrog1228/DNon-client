@@ -7,6 +7,11 @@ public class APIClientTester : MonoBehaviour
 {
     private APIClient apiClient = APIClient.GetClient();
 
+    public void PWDTester()
+    {
+        
+    }
+
     public void APILoginTester()
     {
         apiClient.LoginUser("test01@gmail.com", "1234").Catch(err =>
