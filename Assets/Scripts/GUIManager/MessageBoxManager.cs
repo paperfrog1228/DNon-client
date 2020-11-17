@@ -7,11 +7,12 @@ public class MessageBoxManager : MonoBehaviour
 {
     [SerializeField] Text messageTitle;
     [SerializeField] Text messageBody;
+    [SerializeField] Button confirmButton;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        confirmButton.Select();
     }
 
     // Update is called once per frame

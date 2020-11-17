@@ -7,6 +7,7 @@ public class FrontPageUIManager : MonoBehaviour
 {
     [SerializeField] Canvas channelCanvas;
     [SerializeField] Canvas signCanvas;
+    [SerializeField] Canvas userInfoCavas;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,33 @@ public class FrontPageUIManager : MonoBehaviour
     {
         channelCanvas.gameObject.SetActive(false);
         signCanvas.gameObject.SetActive(true);
+        userInfoCavas.gameObject.SetActive(false);
     }
 
     public void ToChannelPage()
     {
         channelCanvas.gameObject.SetActive(true);
         signCanvas.gameObject.SetActive(false);
+        userInfoCavas.gameObject.SetActive(false);
+    }
+
+    public void ToUserInfoPage()
+    {
+        channelCanvas.gameObject.SetActive(false);
+        signCanvas.gameObject.SetActive(false);
+        userInfoCavas.gameObject.SetActive(true);
+    }
+
+    public void Logout()
+    {
+        if (APIClient.GetClient().Signed)
+        {
+            APIClient.GetClient().LogoutUser().Then(() =>
+            {
+                signCanvas.gameObject.SetActive(false);
+                channelCanvas.gameObject.SetActive(false);
+                channelCanvas.gameObject.SetActive(true);
+            });
+        }
     }
 }

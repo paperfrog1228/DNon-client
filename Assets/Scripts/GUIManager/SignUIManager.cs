@@ -114,9 +114,9 @@ public class SignUIManager : MonoBehaviour
         }
         else
         {
-            if (pwdConfirmInput.text.Equals(""))
+            if (!pwdConfirmInput.text.Equals(pwdInput))
             {
-                PopUpMessage("Error!", "비밀번호를 한 번 더 입력해 주세요.");
+                PopUpMessage("Error!", "비밀번호를 다시 확인해 주세요.");
                 return;
             }
             if (userNameInput.text.Equals(""))
@@ -134,13 +134,16 @@ public class SignUIManager : MonoBehaviour
                 {
                     PopUpMessage("Error", "이미 존재하는 계정입니다.");
                 }
+                else if (err.Message.Contains("400"))
+                {
+                    PopUpMessage("Error", "사용자명에는 영문자, 숫자 외의 문자는 사용할 수 없습니다.");
+                }
                 else
                 {
                     PopUpMessage("Error", "예상치 못한 에러가 발생했습니다. 관리자에게 문의해 주세요. \n" + err.Message);
                 }
             });
         }
-
     }
 
     private void PopUpMessage(string title, string body)

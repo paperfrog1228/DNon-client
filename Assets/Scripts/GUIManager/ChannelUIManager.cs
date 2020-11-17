@@ -29,6 +29,7 @@ public class ChannelUIManager : MonoBehaviour
         }
         else
         {
+            playerNameField.text = "";
             logoutButton.gameObject.SetActive(false);
             userInfoButton.gameObject.SetActive(false);
             toSignButton.gameObject.SetActive(true);
@@ -40,4 +41,6 @@ public class ChannelUIManager : MonoBehaviour
     {
         
     }
+
+    
 }

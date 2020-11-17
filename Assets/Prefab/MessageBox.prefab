@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   messageTitle: {fileID: 6287047599534556284}
   messageBody: {fileID: 2554269599811340939}
+  confirmButton: {fileID: 5972035869677675272}
 --- !u!1 &6370506571205562328
 GameObject:
   m_ObjectHideFlags: 0
