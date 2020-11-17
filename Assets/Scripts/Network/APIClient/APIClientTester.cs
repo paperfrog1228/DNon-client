@@ -54,7 +54,7 @@ public class APIClientTester : MonoBehaviour
         if (playerName.Equals("")) { playerName = "DNON"; }
         apiClient.PostPlayer(1, playerName).Then(res =>
         {
-            Debug.Log(res.Text);
+            Debug.Log(res.message);
         }).Catch(err =>
         {
             Debug.Log(err.Message);
@@ -78,7 +78,7 @@ public class APIClientTester : MonoBehaviour
     {
         apiClient.UpdatePlayer(1, 4, 9999).Then(res =>
          {
-             Debug.Log(res.Text);
+             Debug.Log(res.message);
          });
     }
 
