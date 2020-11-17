@@ -13,6 +13,9 @@ public class ChannelList : MonoBehaviour
     [SerializeField]
     GameObject channelItem = null;
 
+    [SerializeField]
+    InputField playerNameField = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +39,7 @@ public class ChannelList : MonoBehaviour
                 string channelName = "Channel # " + channel.channelId.ToString();
                 channelInfo.UpdateItem(channelName, channel.battlefield.battlefieldName, channel.participants.Count, channel.maximum);
             }
+            if (!APIClient.GetClient().Signed) playerNameField.Select();
         });
     }
 }

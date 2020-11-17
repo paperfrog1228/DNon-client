@@ -18,6 +18,8 @@ public class APIClient
 
     private static APIClient uniqueInstance;
 
+    private UserVO signedUserInfo;
+
     /// <summary>
     /// Does the API Client have JWT token?
     /// </summary>
@@ -25,6 +27,12 @@ public class APIClient
     {
         get { return !JWT.Equals("0"); }
     }
+
+    public UserVO SignedUserInfo { get => signedUserInfo; set => signedUserInfo = value; }
+
+    /// <summary>
+    /// Value object for current user infomation
+    /// </summary>
 
     /// <summary>
     /// Response not defined as a data type
@@ -306,15 +314,20 @@ public class APIClient
     /// <returns></returns>
     public IPromise LoginUser(string email, string pwd)
     {
-        LoginInfo user = new LoginInfo
+        LoginInfo newUser = new LoginInfo
         {
             email = email,
             password = pwd
         };
 
-        return RestClient.Post<UniversalServerResponse>(serverURL + "/auth/login", user).Then(res =>
+        return RestClient.Post<UniversalServerResponse>(serverURL + "/auth/login", newUser).Then(res =>
         {
             this.JWT = res.Authorization;
+
+            return GetUser(res.message).Then(user =>
+            {
+                this.SignedUserInfo = user;
+            });
         });
     }
 
