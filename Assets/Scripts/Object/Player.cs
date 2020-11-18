@@ -12,39 +12,48 @@ public class Player : User
     [SerializeField,Range(0,30)]
     private float speed=5.0f;
     private int hp;
+    protected Animator animator;
     public Text hpText;
     [ShowInInspector]public int Hp { get { return hp; } set { hp = value;
             hpText.text = "Hp : " + hp;
         } }
-    private void Awake()
+    private void Awake() 
     {
         instance = this;
     }
     private void Start()
     {
+        animator = GetComponent<Animator>();
         base.Start();
     }
-    void Update()
+    protected void Update()
     {
+        
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
-        transform.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
-        if (Input.GetMouseButtonUp(0)) {
-            Attack(Input.mousePosition);
-        }
+        if (horizontal != 0 || vertical != 0)
+            Run(horizontal, vertical);
         SetNicknamePosition();
     }
-    private void Attack(Vector3 mousePos) {
-        var flask = Instantiate(Resources.Load("Prefab/flask")) as GameObject;
-        flask.transform.position = gameObject.transform.position;
-        flask.GetComponent<Flask>().targetPos=Camera.main.ScreenToWorldPoint(mousePos + new Vector3(0, 0, 10));
-        flask.SetActive(true);
-    }
+
     #region Damage
     public void ReceiveDamage(int damage) {
         Hp -= damage;
-        Debug.Log(Time.time);
+    }
+    #endregion
+    #region Animation
+        protected void Run(float horizontal,float vertical)
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))
+            animator.SetTrigger("run");
+        {
+            if (horizontal > 0)
+                transform.localScale = new Vector3(-1, 1, 1);
+            else
+                transform.localScale = new Vector3(1, 1, 1);
+        }
+        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
+        transform.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
     }
     #endregion
     public static Player Instance()
