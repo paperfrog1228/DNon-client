@@ -8,6 +8,9 @@ public class ChannelList : MonoBehaviour
     public List<ChannelItem> channelList;
 
     [SerializeField]
+    ChannelUIManager channelUIManager = null;
+
+    [SerializeField]
     GameObject channelListContent = null;
 
     [SerializeField]
@@ -35,9 +38,10 @@ public class ChannelList : MonoBehaviour
             {
                 GameObject newItem = Instantiate(channelItem);
                 newItem.transform.SetParent(channelListContent.transform);
-                ChannelItem channelInfo = newItem.GetComponent<ChannelItem>();
-                string channelName = "Channel # " + channel.channelId.ToString();
-                channelInfo.UpdateItem(channelName, channel.battlefield.battlefieldName, channel.participants.Count, channel.maximum);
+                ChannelItem item = newItem.GetComponent<ChannelItem>();
+                item.ChannelData = channel;
+
+                newItem.GetComponent<Button>().onClick.AddListener(delegate { channelUIManager.EnterGame(channel.channelId); });
             }
             if (!APIClient.GetClient().Signed) playerNameField.Select();
         });

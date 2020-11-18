@@ -9,6 +9,8 @@ public class FrontPageUIManager : MonoBehaviour
     [SerializeField] Canvas signCanvas;
     [SerializeField] Canvas userInfoCavas;
 
+    [SerializeField] MessageBoxManager messageBoxPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,5 +55,11 @@ public class FrontPageUIManager : MonoBehaviour
                 channelCanvas.gameObject.SetActive(true);
             });
         }
+    }
+
+    public void PopUpMessage(string title, string body)
+    {
+        MessageBoxManager messageBox = Instantiate(messageBoxPrefab, transform);
+        messageBox.SetMessage(title, body);
     }
 }

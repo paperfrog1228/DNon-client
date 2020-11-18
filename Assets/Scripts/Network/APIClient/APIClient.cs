@@ -194,9 +194,10 @@ public class APIClient
     /// <returns></returns>
     public IPromise<UniversalServerResponse> PostPlayer(int channelId, string playerName)
     {
-        return RestClient.Post<UniversalServerResponse>(serverURL + "/ch/" + channelId.ToString() + "/participants/", new PlayerVO
+        return RestClient.Post<UniversalServerResponse>(serverURL + "/ch/" + channelId.ToString() + "/participants", new PlayerVO
         {
-            playerName = playerName
+            playerName = playerName,
+            highscore = 0
         });
     }
 
