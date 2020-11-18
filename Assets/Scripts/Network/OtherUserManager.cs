@@ -36,4 +36,15 @@ public class OtherUserManager : MonoBehaviour
         return instance;
 
     }
+    public void InstantiatePlayer(string type) {
+        GameObject player=null;
+        switch (type)
+        {
+            case "Chemical":
+               player=Instantiate(Resources.Load("Prefab/ChemicalMan")) as GameObject;
+                break;
+        }
+        CameraMover.Instance().SetPlayer(player);
+
+    }
 }

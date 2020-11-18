@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 /// <summary>
 /// Player -> 조종하는 사람
 /// </summary>
 public class Player : User
 {
+    [BoxGroup,SerializeField] protected string type = "Chemical";
     private static Player instance = null;
     [SerializeField,Range(0,30)]
     private float speed=5.0f;

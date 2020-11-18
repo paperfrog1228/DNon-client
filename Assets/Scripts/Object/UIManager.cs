@@ -6,13 +6,21 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject MapPanel;
     public GameObject NicknamePanel;
+    [SerializeField] private GameObject classPanel;
     private void Awake()
     {
         instance = this;
     }
-    public void OpenMap() {
-        MapPanel.SetActive(true);
+    private void Start()
+    {
+        classPanel.SetActive(true);
     }
+    #region Button
+    public void BtnChemical() {
+        OtherUserManager.Instance().InstantiatePlayer("Chemical");
+        classPanel.SetActive(false);
+    }
+    #endregion
     #region singleton
     static UIManager instance;
     public static UIManager Instance() { 

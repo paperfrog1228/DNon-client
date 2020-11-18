@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class User : MonoBehaviour
 {
-    [ShowInInspector] private GameObject nickname;
+    [BoxGroup,ShowInInspector] private GameObject nickname;
     private Transform userTransfrom;
-    public int SocketID;
+    [BoxGroup]public int SocketID;
     protected void Start()
     {
         nickname=Instantiate(Resources.Load("Prefab/Nickname")) as GameObject;
