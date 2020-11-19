@@ -18,6 +18,8 @@ public class APIClient
 
     private static APIClient uniqueInstance;
 
+    private UserVO signedUserInfo;
+
     /// <summary>
     /// Does the API Client have JWT token?
     /// </summary>
@@ -25,6 +27,12 @@ public class APIClient
     {
         get { return !JWT.Equals("0"); }
     }
+
+    public UserVO SignedUserInfo { get => signedUserInfo; set => signedUserInfo = value; }
+
+    /// <summary>
+    /// Value object for current user infomation
+    /// </summary>
 
     /// <summary>
     /// Response not defined as a data type
@@ -91,7 +99,7 @@ public class APIClient
     /// <param name="email"></param>
     /// <param name="pwd"></param>
     /// <returns></returns>
-    public IPromise<ResponseHelper> PostUser(string name, string email, string pwd)
+    public IPromise<UniversalServerResponse> PostUser(string name, string email, string pwd)
     {
         UserVO newUser = new UserVO
         {
@@ -100,7 +108,7 @@ public class APIClient
             userPassword = pwd
         };
 
-        return RestClient.Post(serverURL + "/user/", newUser);
+        return RestClient.Post<UniversalServerResponse>(serverURL + "/user/", newUser);
     }
 
     /// <summary>
@@ -118,9 +126,9 @@ public class APIClient
     /// </summary>
     /// <param name="userName"></param>
     /// <returns></returns>
-    public IPromise<ResponseHelper> DeleteUser(string userName)
+    public IPromise<UniversalServerResponse> DeleteUser(string userName)
     {
-        return RestClient.Delete(new RequestHelper
+        return RestClient.Request<UniversalServerResponse>(new RequestHelper
         {
             Uri = serverURL + "/user/" + userName,
             Method = "DELETE",
@@ -184,9 +192,9 @@ public class APIClient
     /// <param name="channelId"></param>
     /// <param name="playerName"></param>
     /// <returns></returns>
-    public IPromise<ResponseHelper> PostPlayer(int channelId, string playerName)
+    public IPromise<UniversalServerResponse> PostPlayer(int channelId, string playerName)
     {
-        return RestClient.Post(serverURL + "/ch/" + channelId.ToString() + "/participants/", new PlayerVO
+        return RestClient.Post<UniversalServerResponse>(serverURL + "/ch/" + channelId.ToString() + "/participants/", new PlayerVO
         {
             playerName = playerName
         });
@@ -198,9 +206,13 @@ public class APIClient
     /// <param name="channelId"></param>
     /// <param name="playerId"></param>
     /// <returns></returns>
-    public IPromise<ResponseHelper> DeletePlayer(int channelId, int playerId)
+    public IPromise<UniversalServerResponse> DeletePlayer(int channelId, int playerId)
     {
-        return RestClient.Delete(serverURL + "/ch/" + channelId + "/participants/" + playerId);
+        return RestClient.Request<UniversalServerResponse>(new RequestHelper
+        {
+            Uri = serverURL + "/ch/" + channelId + "/participants/" + playerId,
+            Method = "DELETE"
+        });
     }
 
     /// <summary>
@@ -210,9 +222,9 @@ public class APIClient
     /// <param name="playerId"></param>
     /// <param name="score"></param>
     /// <returns></returns>
-    public IPromise<ResponseHelper> UpdatePlayer(int channelId, int playerId, int score)
+    public IPromise<UniversalServerResponse> UpdatePlayer(int channelId, int playerId, int score)
     {
-        return RestClient.Put(serverURL + "/ch/" + channelId + "/participants/" + playerId, new PlayerVO
+        return RestClient.Put<UniversalServerResponse>(serverURL + "/ch/" + channelId + "/participants/" + playerId, new PlayerVO
         {
             highscore = score
         });
@@ -302,15 +314,20 @@ public class APIClient
     /// <returns></returns>
     public IPromise LoginUser(string email, string pwd)
     {
-        LoginInfo user = new LoginInfo
+        LoginInfo newUser = new LoginInfo
         {
             email = email,
             password = pwd
         };
 
-        return RestClient.Post<UniversalServerResponse>(serverURL + "/auth/login", user).Then(res =>
+        return RestClient.Post<UniversalServerResponse>(serverURL + "/auth/login", newUser).Then(res =>
         {
             this.JWT = res.Authorization;
+
+            return GetUser(res.message).Then(user =>
+            {
+                this.SignedUserInfo = user;
+            });
         });
     }
 
