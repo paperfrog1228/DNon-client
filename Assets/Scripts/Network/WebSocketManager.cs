@@ -10,7 +10,7 @@ public class WebSocketManager{
     WebSocket ws;
 
     public Queue<byte[]> MessageQueue = new Queue<byte[]>();
-    public void Connect (string url) {
+    public async void Connect (string url) {
         ws = WebSocketFactory.CreateInstance(url);
         ws.OnOpen += () =>
         {
@@ -18,8 +18,8 @@ public class WebSocketManager{
         };
         ws.OnMessage += (byte[] msg) =>
         {
+          // Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
             MessageQueue.Enqueue(msg);
-            Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
          };
 
         ws.OnError += (string errMsg) =>
@@ -32,13 +32,28 @@ public class WebSocketManager{
         {
             Debug.Log("WS closed with code: " + code.ToString());
         };
-        ws.Connect();
+       // InvokeRepeating("SendWebSocketMessage", 0.0f, 0.3f);
+        await ws.Connect();
 
     }
+    public void Dispatch() {
+        #if !UNITY_WEBGL || UNITY_EDITOR
+        ws.DispatchMessageQueue();
+        #endif
+    }
 
+    async void SendWebSocketMessage(byte[] msg)
+    {
+        if (ws.State == WebSocketState.Open)
+        {
+
+            await ws.Send(msg);
+
+    }
+    }
     public void SendMsg(JsonBase json)
     {
-        ws.Send(JsonManager.Instance().GetByte(json));
+        SendWebSocketMessage(JsonManager.Instance().GetByte(json));
     }
     public void SendMsg(string str)
     {
