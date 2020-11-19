@@ -12,39 +12,55 @@ public class OtherUserManager : MonoBehaviour
     private List<User> userList = new List<User>();
     [ShowInInspector]
     private Dictionary<int, User> userDic = new Dictionary<int, User>();
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform otherUserTransform;
     private void Awake()
     {
         instance = this;
     }
-    [Button]
-    public void InitUser(int socketID)
+    public void InitUser(JsonUser json)
     {
-        if (socketID == NetworkManager.Instance().socketID) return;
-        Debug.Log(socketID+"입장.");
-        var user = Instantiate(Resources.Load("Prefab/User")) as GameObject;
+        if (json.socketID == NetworkManager.Instance().socketID) return;
+        var user = InstantiateUser(json.type);
+        //Debug.Log(socketID+"입장.");
+        user.GetComponent<Player>().DestroyThis();
+
+        user.transform.parent = otherUserTransform;
         var cUser = user.GetComponent<User>();
-        cUser.SocketID = socketID;
+        cUser.SetSocketID(json.socketID);
+        cUser.SetNickname(json.nickname);
         userList.Add(cUser);
-        userDic[socketID] = cUser;
+        userDic[json.socketID] = cUser;
     }
     public void SetUserPos(int socketID, Vector2 vec) {
         if (socketID == NetworkManager.Instance().socketID) return;
-        //Debug.Log(socketID+"번 상대의 위치는 : " + vec);
+        if (!userDic.ContainsKey(socketID)) return;
         userDic[socketID].SetPosition(vec);
     }
-    public static OtherUserManager Instance() {
-        return instance;
-
-    }
-    public void InstantiatePlayer(string type) {
-        GameObject player=null;
+   
+    private GameObject InstantiateUser(string type) {
+        GameObject user = null;
         switch (type)
         {
             case "Chemical":
-               player=Instantiate(Resources.Load("Prefab/ChemicalMan")) as GameObject;
+                user = Instantiate(Resources.Load("Prefab/ChemicalMan")) as GameObject;
                 break;
         }
+        return user;
+    }
+    public void SetPlayer(string type) {
+        var player = InstantiateUser(type);
+        Debug.Log(player.GetComponent<User>()+"  "+ player.GetComponent<Player>());
+        player.GetComponent<User>().DestroyThis();
+       //TODO : 아니 왜 자꾸 자식이 삭제되냐고 
+        player.transform.parent = playerTransform;
+        var cPlayer = player.GetComponent<Player>();
         CameraMover.Instance().SetPlayer(player);
+        NetworkManager.Instance().Join(cPlayer,type);
+    }
+    public static OtherUserManager Instance()
+    {
+        return instance;
 
     }
 }

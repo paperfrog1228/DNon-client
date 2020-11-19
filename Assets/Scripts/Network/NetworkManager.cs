@@ -12,6 +12,7 @@ public class NetworkManager : MonoBehaviour
     System.Random r=new System.Random();
     WebSocketManager webSocketManager;
     JsonManager jsonManager;
+    Player player;
     public void Connect() {
         webSocketManager.Connect(url);
     }
@@ -22,10 +23,16 @@ public class NetworkManager : MonoBehaviour
     public void Connected(string js) {
         Debug.Log("Connect Allow.");
         onConnect = true;
-        JsonPlayer data = new JsonPlayer("join");
+        UIManager.Instance().SetFalseLoadingPanel();
+    }
+    public void Join(Player player,string type) {
+        this.player = player;
+        player.SetSocketID(socketID);
+        JsonUser data = new JsonUser("join");
         data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
+        data.SetType(type);
         webSocketManager.SendMsg(data);
-        StartCoroutine("SendPosCoroutine",0.3f);
+        StartCoroutine("SendPosCoroutine", 0.3f);
     }
     private void DecodeMsg(byte[] msg) 
     { 
@@ -41,9 +48,9 @@ public class NetworkManager : MonoBehaviour
         case "initOtherPlayer":
             InitOtherPlayer(msg_str);
         break;
-            case "notifyNewPlayer":
-                InitOtherPlayer(msg_str);
-                break;
+        case "notifyNewPlayer":
+            InitOtherPlayer(msg_str);
+        break;
         }
     }
     #region mono
@@ -61,12 +68,12 @@ public class NetworkManager : MonoBehaviour
         Connect();
     }
     void InitOtherPlayer(string msg_str) {
-        var json = jsonManager.JsonToObject<JsonBase>(msg_str);
-        OtherUserManager.Instance().InitUser(Int32.Parse(json.data));
+        var json = jsonManager.JsonToObject<JsonUser>(msg_str);
+        OtherUserManager.Instance().InitUser(json);
     }
     void SendPos() {
         var json = new JsonPosition("position");
-        json.SetPos(Player.Instance().gameObject.transform.position);
+        json.SetPos(player.gameObject.transform.position);
         webSocketManager.SendMsg(json);
     }
     void Update()

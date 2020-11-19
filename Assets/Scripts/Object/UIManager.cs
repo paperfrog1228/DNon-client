@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject MapPanel;
+    [SerializeField] private GameObject loadingPanel;
     public GameObject NicknamePanel;
     [SerializeField] private GameObject classPanel;
     private void Awake()
     {
         instance = this;
+        loadingPanel.SetActive(true);
     }
     private void Start()
     {
         classPanel.SetActive(true);
     }
+    public void SetFalseLoadingPanel() {
+        loadingPanel.SetActive(false);
+    }
     #region Button
     public void BtnChemical() {
-        OtherUserManager.Instance().InstantiatePlayer("Chemical");
+        OtherUserManager.Instance().SetPlayer("Chemical");
         classPanel.SetActive(false);
     }
     #endregion
