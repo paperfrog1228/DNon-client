@@ -46,6 +46,8 @@ public class OtherUserManager : MonoBehaviour
                 user = Instantiate(Resources.Load("Prefab/Chemical")) as GameObject;
                 break;
         }
+        user.tag = "Other";
+        user.transform.GetChild(0).tag = "Other";
         user.transform.position = new Vector3(0,0,-10);
         return user;
     }

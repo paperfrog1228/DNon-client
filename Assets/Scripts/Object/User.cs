@@ -54,11 +54,11 @@ public class User : MonoBehaviour
     /// </summary>
     /// <param name="dir"> 0 == left, 1== right</param>
     protected void SetDirection(int dir) {
-        var tmp = transform.localScale;
+
         if(dir==0)
-        transform.localScale = new Vector3(tmp.x, tmp.y, tmp.z);
+        transform.localScale = new Vector3(-1, 1, 1);
         else
-        transform.localScale = new Vector3(-tmp.x, tmp.y, tmp.z);
+        transform.localScale = new Vector3(1, 1, 1);
     }
     #endregion
 }

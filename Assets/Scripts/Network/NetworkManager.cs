@@ -13,6 +13,7 @@ public class NetworkManager : MonoBehaviour
     WebSocketManager webSocketManager;
     JsonManager jsonManager;
     Player player;
+
     public void Connect() {
         webSocketManager.Connect(url);
     }
@@ -57,8 +58,8 @@ public class NetworkManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        socketID = r.Next(1, 100);
-        Debug.Log("My socket id is " + socketID);
+        var tmp = APIClient.GetClient().PlayerInfo;
+        Debug.Log("My socket id is " + tmp.playerId +""+tmp.playerName);
     }
 
     void Start()

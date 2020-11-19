@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9074535928970103304}
   - component: {fileID: 195494082203171704}
-  - component: {fileID: 8741745805418391126}
   - component: {fileID: 4539540178028061153}
   - component: {fileID: 8398334639416320970}
   - component: {fileID: 8360212357132476752}
@@ -55,27 +54,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!50 &8741745805418391126
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 474842986291387241}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &4539540178028061153
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -132,7 +110,6 @@ MonoBehaviour:
   hpbar: {fileID: 0}
   type: Chemical
   speed: 5
-  hpText: {fileID: 0}
 --- !u!1 &507827375259405174
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,6 +926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 0
   currentHp: 0
+  hpFillTransform: {fileID: 0}
 --- !u!1 &8295639022174556661
 GameObject:
   m_ObjectHideFlags: 0

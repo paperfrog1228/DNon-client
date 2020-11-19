@@ -13,7 +13,8 @@ public class ToxicField : MonoBehaviour
     private bool enter = false;
     Player player;
     public void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.tag != "Player") return;
+        if (!other.gameObject.CompareTag("Player")) return;
+        Debug.Log(other.tag);
         enter = true;
         player = other.gameObject.GetComponent<Player>();
         StartCoroutine(DamageCoroutine());

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HpBar : MonoBehaviour
 {
-    [SerializeField] private float maxHp;
-    [SerializeField] private float currentHp;
+    [SerializeField] private float maxHp=100;
+    [SerializeField] private float currentHp=100;
     [SerializeField]private Transform hpFillTransform;
     void Start()
     {
@@ -14,7 +14,7 @@ public class HpBar : MonoBehaviour
 
     public void SetHpBar(int hp)
     {
-        if (hpFillTransform == null) return;
+      //  if (hpFillTransform == null) return;
         currentHp = hp;
         if (currentHp > maxHp) currentHp = maxHp;
         if (currentHp <0) currentHp = 0;
