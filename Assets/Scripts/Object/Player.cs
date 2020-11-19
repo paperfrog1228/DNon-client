@@ -13,12 +13,7 @@ public class Player : User
     private static Player instance = null;
     [SerializeField,Range(0,30)]
     private float speed=5.0f;
-    private int hp;
-    protected Animator animator;
-    public Text hpText;
-    [ShowInInspector]public int Hp { get { return hp; } set { hp = value;
-            hpText.text = "Hp : " + hp;
-        } }
+    
     private void Awake() 
     {
         instance = this;
@@ -44,18 +39,17 @@ public class Player : User
     }
     #endregion
     #region Animation
-        protected void Run(float horizontal,float vertical)
+    protected void Run(float horizontal,float vertical)
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))
             animator.SetTrigger("run");
-        {
-            if (horizontal > 0)
-                transform.localScale = new Vector3(-1, 1, 1);
-            else
-                transform.localScale = new Vector3(1, 1, 1);
-        }
-        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
-        transform.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
+
+        if (horizontal > 0)
+            SetDirection(0);
+        else
+            SetDirection(1);
+        transform.parent.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
+        transform.parent.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
     }
     #endregion
     public static Player Instance()

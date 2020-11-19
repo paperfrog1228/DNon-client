@@ -23,10 +23,10 @@ public class OtherUserManager : MonoBehaviour
         if (json.socketID == NetworkManager.Instance().socketID) return;
         var user = InstantiateUser(json.type);
         //Debug.Log(socketID+"입장.");
-        user.GetComponent<Player>().DestroyThis();
+        user.transform.GetChild(0).GetComponent<Player>().DestroyThis();
 
         user.transform.parent = otherUserTransform;
-        var cUser = user.GetComponent<User>();
+        var cUser = user.transform.GetChild(0).GetComponent<User>();
         cUser.SetSocketID(json.socketID);
         cUser.SetNickname(json.nickname);
         userList.Add(cUser);
@@ -43,18 +43,18 @@ public class OtherUserManager : MonoBehaviour
         switch (type)
         {
             case "Chemical":
-                user = Instantiate(Resources.Load("Prefab/ChemicalMan")) as GameObject;
+                user = Instantiate(Resources.Load("Prefab/Chemical")) as GameObject;
                 break;
         }
+        user.transform.position = new Vector3(0,0,-10);
         return user;
     }
     public void SetPlayer(string type) {
         var player = InstantiateUser(type);
         Debug.Log(player.GetComponent<User>()+"  "+ player.GetComponent<Player>());
-        player.GetComponent<User>().DestroyThis();
-       //TODO : 아니 왜 자꾸 자식이 삭제되냐고 
-        player.transform.parent = playerTransform;
-        var cPlayer = player.GetComponent<Player>();
+        player.transform.GetChild(0).GetComponent<User>().DestroyThis();
+        player.transform.parent= playerTransform;
+        var cPlayer = player.transform.GetChild(0).GetComponent<Player>();
         CameraMover.Instance().SetPlayer(player);
         NetworkManager.Instance().Join(cPlayer,type);
     }
