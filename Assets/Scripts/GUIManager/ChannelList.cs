@@ -41,7 +41,7 @@ public class ChannelList : MonoBehaviour
                 ChannelItem item = newItem.GetComponent<ChannelItem>();
                 item.ChannelData = channel;
 
-                newItem.GetComponent<Button>().onClick.AddListener(delegate { channelUIManager.EnterGame(channel.channelId); });
+                newItem.GetComponent<Button>().onClick.AddListener(delegate { channelUIManager.EnterGame(channel.channelId, playerNameField.text); });
             }
             if (!APIClient.GetClient().Signed) playerNameField.Select();
         });

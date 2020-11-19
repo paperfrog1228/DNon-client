@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 public class ChannelUIManager : MonoBehaviour
 {
@@ -44,18 +46,18 @@ public class ChannelUIManager : MonoBehaviour
         
     }
 
-    public void EnterGame(int channelId)
+    [Button]
+    public void EnterGame(int channelId, string playerName)
     {
-        if (playerNameField.text.Equals(""))
+        if (playerName.Equals(""))
         {
             frontPageUIManager.PopUpMessage("Error", "이름을 입력해 주세요.");
             return;
         }
 
-        APIClient.GetClient().PostPlayer(channelId, playerNameField.text).Then(res =>
+        APIClient.GetClient().PostPlayer(channelId, playerName).Then(res =>
         {
-            // TODO : 게임 화면으로 전환
-            Debug.Log(res.message);
+            SceneManager.LoadScene("#2_Game");
         }).Catch(err =>
         {
             string msg = err.Message;

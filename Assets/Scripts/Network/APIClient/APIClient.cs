@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Proyecto26;   // RestClient
 using RSG;          // IPromise
+using Sirenix.OdinInspector;
 using System;
 
 /// <summary>
@@ -19,6 +20,8 @@ public class APIClient
     private static APIClient uniqueInstance;
 
     private UserVO signedUserInfo;
+    private PlayerVO playerInfo;
+    private ChannelVO channelInfo;
 
     /// <summary>
     /// Does the API Client have JWT token?
@@ -28,11 +31,19 @@ public class APIClient
         get { return !JWT.Equals("0"); }
     }
 
-    public UserVO SignedUserInfo { get => signedUserInfo; set => signedUserInfo = value; }
-
     /// <summary>
     /// Value object for current user infomation
     /// </summary>
+    public UserVO SignedUserInfo { get => signedUserInfo; set => signedUserInfo = value; }
+
+    /// <summary>
+    /// Value object for current player information
+    /// </summary>
+    public PlayerVO PlayerInfo { get => playerInfo; set => playerInfo = value; }
+
+
+    public ChannelVO ChannelInfo { get => channelInfo; set => channelInfo = value; }
+
 
     /// <summary>
     /// Response not defined as a data type
@@ -54,7 +65,7 @@ public class APIClient
 
     private APIClient()
     {
-        //serverURL = "http://127.0.0.1:5000";
+        //serverURL = "http://127.0.0.1:5000";  // Dev
         serverURL = "http://54.159.199.82:5000";
         JWT = "0";
     }
@@ -198,6 +209,14 @@ public class APIClient
         {
             playerName = playerName,
             highscore = 0
+        }).Then(res =>
+        {
+            this.playerInfo = new PlayerVO
+            {
+                playerId = Int32.Parse(res.message),
+                playerName = playerName
+            };
+            return res;
         });
     }
 
