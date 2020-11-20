@@ -13,12 +13,15 @@ public class Flask : MonoBehaviour
 	[ShowInInspector]private GameObject field;
 	public Vector3 targetPos;
 	[Range(0,10),SerializeField] private float fieldHoldTime;
+	
 	private void Start()
     {
 		bottle = transform.GetChild(0).gameObject;
 		bottle.GetComponent<Bottle>().targetPos = targetPos;
-		field = transform.GetChild(1).gameObject;
+			field = transform.GetChild(1).gameObject;
     }
+
+
 	public void CompleteThrow() { 
 		field.transform.position = bottle.transform.position;
 		bottle.SetActive(false);
