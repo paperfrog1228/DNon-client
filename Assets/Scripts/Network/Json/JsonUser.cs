@@ -7,7 +7,13 @@ using UnityEngine;
 public class JsonUser : JsonBase
 {
     public string nickname;
-    public string type; // 후에 타입은 int로 변경될 수도 있음.
+    public string type;
+    public float x;
+    public float y;
+    public void SetPos(Vector2 vec) {
+        x = (int)vec.x;
+        y = (int)vec.y;
+    }
     public void SetNickname(string str) {
         nickname = str;
     }

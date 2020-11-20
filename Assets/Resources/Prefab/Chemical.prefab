@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 8189160004018685690}
   - component: {fileID: 5012638947535122407}
   - component: {fileID: 5255732530354759330}
+  - component: {fileID: 8269179773573054463}
   m_Layer: 0
   m_Name: Chemical
   m_TagString: Untagged
@@ -208,8 +209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SocketID: 0
   nicknameTransform: {fileID: 0}
-  state: 0
   hpbar: {fileID: 0}
+  state: 0
 --- !u!114 &5255732530354759330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,10 +225,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SocketID: 0
   nicknameTransform: {fileID: 0}
-  state: 0
   hpbar: {fileID: 0}
+  state: 0
   type: Chemical
   speed: 5
+--- !u!50 &8269179773573054463
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636911916292866671}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 20
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &791306750335880385
 GameObject:
   m_ObjectHideFlags: 0

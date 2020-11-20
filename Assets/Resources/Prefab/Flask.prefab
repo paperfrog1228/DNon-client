@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPos: {x: 0, y: 0, z: 0}
-  fieldHoldTime: 10
+  fieldHoldTime: 4
 --- !u!50 &7876038849547186043
 Rigidbody2D:
   serializedVersion: 4

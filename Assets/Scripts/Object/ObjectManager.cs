@@ -7,7 +7,6 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
     public void AttackChemical(JsonAttack json) {
-        Debug.Log("실행돠라고");
         if (json.socketID == NetworkManager.Instance().socketID) return;
         var flask = Instantiate(Resources.Load("Prefab/flask")) as GameObject;
         flask.transform.position = new Vector3(json.x1,json.x2,-10);

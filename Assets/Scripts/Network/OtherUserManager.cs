@@ -27,6 +27,7 @@ public class OtherUserManager : MonoBehaviour
         var cUser = user.GetComponent<User>();
         cUser.SetSocketID(json.socketID);
         cUser.SetNickname(json.nickname);
+        cUser.gameObject.transform.position = new Vector3(json.x, json.y, -10);
         userList.Add(cUser);
         userDic[json.socketID] = cUser;
     }
@@ -50,6 +51,19 @@ public class OtherUserManager : MonoBehaviour
         }
         user.transform.position = new Vector3(0,0,-10);
         return user;
+    }
+    public void ExitUser(int socketID) {
+        if (socketID == NetworkManager.Instance().socketID) return;
+        for (int i = 0; i < userList.Count; i++) {
+            if (socketID == userList[i].SocketID)
+            {
+                userList.RemoveAt(i);
+                break;
+            }
+
+        }
+        userDic.Remove(socketID);
+    
     }
     public void SetPlayer(string type) {
         var player = InstantiateUser(type);

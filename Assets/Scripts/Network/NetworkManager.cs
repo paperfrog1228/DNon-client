@@ -38,6 +38,9 @@ public class NetworkManager : MonoBehaviour
             case "receiveAttackChemical":
             ReceiveAttackChemical(msg_str);
                 break;
+            case "exitOther":
+                ExitOther(msg_str);
+                break;
               }
     }
 
@@ -51,14 +54,17 @@ public class NetworkManager : MonoBehaviour
         jsonState.SetState((int)player.state);
         webSocketManager.SendMsg(jsonState);
     }
+    public void ExitGame() {
+        var json = new JsonBase("exitUser");
+        webSocketManager.SendMsg(json);
+    }
     public void Join(Player player,string type) {
-
         this.player = player;
         if(APIClient.GetClient().PlayerInfo!=null)
         player.SetNickname(APIClient.GetClient().PlayerInfo.playerName);
         player.SetSocketID(socketID);
         JsonUser data = new JsonUser("join");
-        data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
+        data.SetNickname("empty");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
         data.SetType(type);
         webSocketManager.SendMsg(data);
         StartCoroutine("SendStateCoroutine", frame);
@@ -70,6 +76,10 @@ public class NetworkManager : MonoBehaviour
     }
     #endregion
     #region Stub
+    void ExitOther(string js) {
+        var json = jsonManager.JsonToObject<JsonBase>(js);
+        OtherUserManager.Instance().ExitUser(json.socketID) ;
+    }
     void ReceiveOtherState(string js) {
         var json = jsonManager.JsonToObject<JsonState>(js);
         OtherUserManager.Instance().SetUserState(json);
@@ -122,6 +132,10 @@ public class NetworkManager : MonoBehaviour
             DecodeMsg(webSocketManager.MessageQueue.Dequeue());
         }
 
+    }
+    private void OnApplicationQuit()
+    {
+        ExitGame();
     }
     IEnumerator SendStateCoroutine(float time){
         while (true)
