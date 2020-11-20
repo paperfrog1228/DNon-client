@@ -10,8 +10,8 @@ public class ObjectManager : MonoBehaviour
         if (json.socketID == NetworkManager.Instance().socketID) return;
         var flask = Instantiate(Resources.Load("Prefab/flask")) as GameObject;
         flask.SetActive(false);
-        flask.transform.position = new Vector3(json.x1,json.y2,-10);
-        flask.GetComponent<Flask>().targetPos = new Vector3(json.x1, json.y2, -10);
+        flask.transform.position = new Vector3(json.x1,json.y1,-10);
+        flask.GetComponent<Flask>().targetPos = new Vector3(json.x2, json.y2, -10);
         flask.SetActive(true);
     }
     private void Awake()

@@ -30,6 +30,7 @@ public class WebSocketManager{
 
         ws.OnClose += (WebSocketCloseCode code) =>
         {
+            NetworkManager.Instance().ExitGame();
             Debug.Log("WS closed with code: " + code.ToString());
         };
        // InvokeRepeating("SendWebSocketMessage", 0.0f, 0.3f);

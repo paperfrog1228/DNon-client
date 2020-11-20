@@ -10,9 +10,9 @@ public class JsonAttack : JsonBase
         socketID = NetworkManager.Instance().socketID;
     }
     public void SetPos(Vector2 s, Vector2 t) {
-        x1 = s.x;
-        y1 = s.y;
-        x2 = t.x;
-        y2 = t.y;
+        x1 = Mathf.Round(s.x);
+        y1 = Mathf.Round(s.y);
+        x2 = Mathf.Round(t.x);
+        y2 = Mathf.Round(t.y);
     }   
 }
