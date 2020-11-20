@@ -100,7 +100,7 @@ public class APIClient
     /// <returns></returns>
     public IPromise<UserVO[]> GetUsers()
     {
-        return RestClient.GetArray<UserVO>(serverURL + "/user/");
+        return RestClient.GetArray<UserVO>(serverURL + "/user");
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ public class APIClient
     /// <returns>response : List of channels</returns>
     public IPromise<ChannelVO[]> GetChannelList()
     {
-        return RestClient.GetArray<ChannelVO>(serverURL + "/ch/");
+        return RestClient.GetArray<ChannelVO>(serverURL + "/ch");
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public class APIClient
     /// <returns></returns>
     public IPromise<PlayerVO[]> GetPlayers(int channelId)
     {
-        return RestClient.GetArray<PlayerVO>(serverURL + "/ch/" + channelId.ToString() + "/participants/");
+        return RestClient.GetArray<PlayerVO>(serverURL + "/ch/" + channelId.ToString() + "/participants");
     }
 
     /// <summary>
@@ -258,7 +258,7 @@ public class APIClient
     /// <returns></returns>
     public IPromise<PlayerVO[]> GetRanking(int channelId)
     {
-        return RestClient.GetArray<PlayerVO>(serverURL + "/ch/" + channelId.ToString() + "/ranking/");
+        return RestClient.GetArray<PlayerVO>(serverURL + "/ch/" + channelId.ToString() + "/ranking");
     }
 
     #endregion

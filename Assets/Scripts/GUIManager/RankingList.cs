@@ -23,6 +23,7 @@ public class RankingList : MonoBehaviour
     [Button]
     public void RefreshRankList()
     {
+        Debug.Log(APIClient.GetClient().CurrentChannel);
         foreach (Transform child in transform)
         {
             GameObject.Destroy(child.gameObject);
@@ -38,6 +39,7 @@ public class RankingList : MonoBehaviour
                 RankItem item = newItem.GetComponent<RankItem>();
                 item.PlayerName = player.playerName;
                 item.Rank = idx;
+                item.Score = player.highscore;
                 idx++;
                 if (idx > 10) break;
             }

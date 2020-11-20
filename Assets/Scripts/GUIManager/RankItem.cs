@@ -9,9 +9,14 @@ public class RankItem : MonoBehaviour
     Text playerNameField;
     [SerializeField]
     Text rankField;
+    [SerializeField]
+    Text scoreField;
+    [SerializeField]
+    Text classField;
 
     private string playerName;
     private int rank;
+    private int score;
     private string playerClass;
 
     public string PlayerName
@@ -29,7 +34,25 @@ public class RankItem : MonoBehaviour
         set
         {
             rank = value;
-            rankField.text = rank.ToString();
+            rankField.text = rank.ToString() + ".";
+        }
+    }
+    public int Score
+    {
+        get { return score; }
+        set
+        {
+            score = value;
+            scoreField.text = score.ToString();
+        }
+    }
+    public string PlayerClass
+    {
+        get { return playerClass; }
+        set
+        {
+            playerClass = value;
+            classField.text = playerClass;
         }
     }
 
