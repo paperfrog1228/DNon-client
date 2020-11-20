@@ -8,7 +8,7 @@ public class AutoBuilder : MonoBehaviour
 	static void PerformBuild()
 	{
 		var sceneSettings = EditorBuildSettings.scenes;
-		string[] scenePaths = { "Assets/Scenes/#2_Game.unity" }; 
+		string[] scenePaths = { "Assets/Scenes/#1_Front.unity", "Assets/Scenes/#2_Game.unity" }; 
 		BuildPipeline.BuildPlayer(scenePaths, "build/webgl", BuildTarget.WebGL, BuildOptions.Development);
 	}
 }

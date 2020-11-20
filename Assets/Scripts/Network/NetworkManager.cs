@@ -4,36 +4,19 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class NetworkManager : MonoBehaviour
 { 
     [SerializeField] string url="wws://localhost:1228";
-    [SerializeField] public string socketID = "1234";
+    [SerializeField] public int socketID = 9999;
+    [SerializeField,Range(0,0.5f)] private float frame;
     public bool onConnect=false;
     System.Random r=new System.Random();
     WebSocketManager webSocketManager;
     JsonManager jsonManager;
-    JsonBase requestJson;
-    [SerializeField] Text test;
-    public void Test() {       
-        JsonBase data = new JsonBase("socketID");
+    Player player;
 
-        webSocketManager.SendMsg(data);
-      }
     public void Connect() {
         webSocketManager.Connect(url);
-    }
-
-    void OtherPosition(string js) {
-        var json = jsonManager.JsonToObject<JsonPosition>(js);
-        OtherUserManager.Instance().SetUserPos(Int32.Parse(json.socketID), new Vector2(json.x, json.y));
-    }
-    public void Connected(string js) {
-        Debug.Log("Connect Allow.");
-        onConnect = true;
-        var json = jsonManager.JsonToObject<JsonBase>(js);
-        JsonBase data = new JsonBase("socketID");
-        webSocketManager.SendMsg(data);
     }
     private void DecodeMsg(byte[] msg) 
     { 
@@ -43,47 +26,129 @@ public class NetworkManager : MonoBehaviour
         case "connected":
             Connected(msg_str);
         break;
-        case "otherPosition":
-            OtherPosition(msg_str);
+        case "receiveOtherState":
+            ReceiveOtherState(msg_str);
         break;
-        }
+        case "initOtherPlayer":
+            InitOtherPlayer(msg_str);
+        break;
+        case "notifyNewPlayer":
+            InitOtherPlayer(msg_str);
+        break;
+            case "receiveAttackChemical":
+            ReceiveAttackChemical(msg_str);
+                break;
+            case "exitOther":
+                ExitOther(msg_str);
+                break;
+              }
     }
+
+    #region Proxy&Stub
+    #region Proxy
+    JsonState jsonState;
+    void SendState() {
+        jsonState.SetPos(player.gameObject.transform.position);
+        jsonState.SetHp(player.Hp);
+        jsonState.SetDir((int)player.transform.GetChild(0).localScale.x);
+        jsonState.SetState((int)player.state);
+        webSocketManager.SendMsg(jsonState);
+    }
+    public void ExitGame() {
+        var json = new JsonBase("exitUser");
+        webSocketManager.SendMsg(json);
+    }
+    public void Join(Player player,string type) {
+        this.player = player;
+        JsonUser data = new JsonUser("join");
+        data.SetNickname("empty");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
+        if (APIClient.GetClient().PlayerInfo != null)
+        {
+            var tmp = APIClient.GetClient().PlayerInfo;
+            player.SetSocketID(tmp.playerId);
+            player.SetNickname(tmp.playerName);
+            data.SetNickname(tmp.playerName);
+        }
+        Debug.Log(APIClient.GetClient().PlayerInfo);
+        data.SetType(type);
+        webSocketManager.SendMsg(data);
+        StartCoroutine("SendStateCoroutine", frame);
+    }
+    public void AttackChemical(Vector2 start, Vector2 target) {
+        var json = new JsonAttack("chemicalAttack");
+        json.SetPos(start, target);
+        webSocketManager.SendMsg(json);
+    }
+    #endregion
+    #region Stub
+    void ExitOther(string js) {
+        var json = jsonManager.JsonToObject<JsonBase>(js);
+        OtherUserManager.Instance().ExitUser(json.socketID) ;
+    }
+    void ReceiveOtherState(string js) {
+        var json = jsonManager.JsonToObject<JsonState>(js);
+        OtherUserManager.Instance().SetUserState(json);
+    }
+    void InitOtherPlayer(string msg_str) {
+        var json = jsonManager.JsonToObject<JsonUser>(msg_str);
+        OtherUserManager.Instance().InitUser(json);
+    }
+    public void Connected(string js) {
+
+        Debug.Log("Connect Allow.");
+        onConnect = true;
+        UIManager.Instance().SetFalseLoadingPanel();
+    }
+    public void ReceiveAttackChemical(string js) {
+        var json = jsonManager.JsonToObject<JsonAttack>(js);
+        ObjectManager.Instance().AttackChemical(json);
+    }
+    #endregion
+    #endregion
     #region mono
     private void Awake()
     {
         instance = this;
-        requestJson = new JsonBase("request");
-        socketID = r.Next(1, 100).ToString();
-     
-        Debug.Log("My socket id is " + socketID);
     }
-    private IEnumerator RequestCorutine()
-    {
-        WaitForSeconds waitSec = new WaitForSeconds(1);
-
-                   
-
-            yield return waitSec;
-    }
-
 
     void Start()
     {
+        if (APIClient.GetClient().PlayerInfo != null)
+        {
+            var tmp = APIClient.GetClient().PlayerInfo;
+            Debug.Log("My socket id is " + tmp.playerId + "" + tmp.playerName);
+            socketID = tmp.playerId;
+        }
+        else {
+            var rand =new System.Random();
+            socketID = rand.Next(0, 100);
+        }
         webSocketManager = WebSocketManager.Instance();
         jsonManager = JsonManager.Instance();
+        jsonState = new JsonState("sendState");
         Connect();
-    }
-
-    void SendPos() {
-        var json = new JsonPosition("position");
-        json.SetPos(Player.Instance().gameObject.transform.position);
-        webSocketManager.SendMsg(json);
     }
     void Update()
     {
-        if (webSocketManager.MessageQueue.Count > 0) 
-           DecodeMsg(webSocketManager.MessageQueue.Dequeue());
-           }
+        webSocketManager.Dispatch();
+        if (webSocketManager.MessageQueue.Count > 0)
+        {   
+            while(webSocketManager.MessageQueue.Count>0)
+            DecodeMsg(webSocketManager.MessageQueue.Dequeue());
+        }
+
+    }
+    private void OnApplicationQuit()
+    {
+        ExitGame();
+    }
+    IEnumerator SendStateCoroutine(float time){
+        while (true)
+        {
+            SendState();
+            yield return new WaitForSeconds(time);
+        }
+    }
     #endregion
     #region singleton
     private static NetworkManager instance;

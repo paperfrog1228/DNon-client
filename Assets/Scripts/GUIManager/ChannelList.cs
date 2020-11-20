@@ -8,10 +8,16 @@ public class ChannelList : MonoBehaviour
     public List<ChannelItem> channelList;
 
     [SerializeField]
+    ChannelUIManager channelUIManager = null;
+
+    [SerializeField]
     GameObject channelListContent = null;
 
     [SerializeField]
     GameObject channelItem = null;
+
+    [SerializeField]
+    InputField playerNameField = null;
 
     // Start is called before the first frame update
     void Start()
@@ -32,10 +38,12 @@ public class ChannelList : MonoBehaviour
             {
                 GameObject newItem = Instantiate(channelItem);
                 newItem.transform.SetParent(channelListContent.transform);
-                ChannelItem channelInfo = newItem.GetComponent<ChannelItem>();
-                string channelName = "Channel # " + channel.channelId.ToString();
-                channelInfo.UpdateItem(channelName, channel.battlefield.battlefieldName, channel.participants.Count, channel.maximum);
+                ChannelItem item = newItem.GetComponent<ChannelItem>();
+                item.ChannelData = channel;
+
+                newItem.GetComponent<Button>().onClick.AddListener(delegate { channelUIManager.EnterGame(channel.channelId, playerNameField.text); });
             }
+            if (!APIClient.GetClient().Signed) playerNameField.Select();
         });
     }
 }
