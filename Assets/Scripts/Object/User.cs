@@ -61,21 +61,6 @@ public class User : MonoBehaviour
     protected void SetNicknamePosition() {
         nickname.transform.position = Camera.main.WorldToScreenPoint(nicknameTransform.position);
     }
-    public void SetState(int state) {
-        switch (state) {
-            case ((int)State.idle):
-
-                break;
-            case ((int)State.attack):
-
-
-                break;
-            case ((int)State.run):
-
-
-                break;
-        }
-    }
     public void SetPosition(Vector2 vec) {
         if (userTransfrom == null) return;
         targetPos = new Vector3(vec.x, vec.y, -10);
@@ -92,7 +77,7 @@ public class User : MonoBehaviour
     /// </summary>
     /// <param name="dir"> 0 == left, 1== right</param>
     protected void SetDirection(int dir) {
-        if(dir==0)
+        if(dir==-1)
         mainBody.localScale = new Vector3(-1, 1, 1);
         else
         mainBody.localScale = new Vector3(1, 1, 1);
@@ -101,6 +86,34 @@ public class User : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, targetPos,5*Time.deltaTime);
         SetNicknamePosition();
+    }
+    #endregion
+    #region State
+    public enum State {
+
+        idle,
+        run,
+        attack,
+        hurt,
+        die,
+    }
+    [BoxGroup]public State state;
+    public void SetState(int state) {
+        switch (state) {
+            case ((int)State.idle):
+                this.state = State.idle;
+                animator.SetBool("run", false);
+                break;
+            case ((int)State.attack):
+                this.state = State.attack;
+                animator.SetTrigger("Attack");
+                break;
+            case ((int)State.run):
+                this.state = State.run;
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))
+                animator.SetBool("run", true);
+                break;
+        }
     }
     #endregion
 }
