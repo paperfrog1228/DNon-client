@@ -21,7 +21,7 @@ public class APIClient
 
     private UserVO signedUserInfo;
     private PlayerVO playerInfo;
-    private ChannelVO channelInfo;
+    private int currentChannel;
 
     /// <summary>
     /// Does the API Client have JWT token?
@@ -42,7 +42,7 @@ public class APIClient
     public PlayerVO PlayerInfo { get => playerInfo; set => playerInfo = value; }
 
 
-    public ChannelVO ChannelInfo { get => channelInfo; set => channelInfo = value; }
+    public int CurrentChannel { get => currentChannel; }
 
 
     /// <summary>
@@ -216,6 +216,7 @@ public class APIClient
                 playerId = Int32.Parse(res.message),
                 playerName = playerName
             };
+            this.currentChannel = channelId;
             return res;
         });
     }
