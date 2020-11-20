@@ -14,6 +14,8 @@ public class User : MonoBehaviour
     private int hp;
     protected Animator animator;
     private Transform mainBody;
+    public  Transform nicknameTransform;
+    private Vector3 targetPos;
     public enum State {
         idle,
         run,
@@ -53,10 +55,11 @@ public class User : MonoBehaviour
         hpbar.SetMaxHp(100);
         mainBody = transform.GetChild(0);
         animator = mainBody.GetComponent<Animator>();
+        nicknameTransform = transform.GetChild(2);
     }
     #region Transform&Animation
     protected void SetNicknamePosition() {
-        nickname.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.8f, 0));
+        nickname.transform.position = Camera.main.WorldToScreenPoint(nicknameTransform.position);
     }
     public void SetState(int state) {
         switch (state) {
@@ -75,7 +78,7 @@ public class User : MonoBehaviour
     }
     public void SetPosition(Vector2 vec) {
         if (userTransfrom == null) return;
-        userTransfrom.position = new Vector3(vec.x, vec.y, -10);
+        targetPos = new Vector3(vec.x, vec.y, -10);
     }
     public void SetHp(int hp) {
         Hp = hp;
@@ -93,6 +96,11 @@ public class User : MonoBehaviour
         mainBody.localScale = new Vector3(-1, 1, 1);
         else
         mainBody.localScale = new Vector3(1, 1, 1);
+    }
+    private void Update()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, targetPos,5*Time.deltaTime);
+        SetNicknamePosition();
     }
     #endregion
 }

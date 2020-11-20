@@ -51,6 +51,8 @@ public class NetworkManager : MonoBehaviour
     public void Join(Player player,string type) {
 
         this.player = player;
+        if(APIClient.GetClient().PlayerInfo!=null)
+        player.SetNickname(APIClient.GetClient().PlayerInfo.playerName);
         player.SetSocketID(socketID);
         JsonUser data = new JsonUser("join");
         data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
