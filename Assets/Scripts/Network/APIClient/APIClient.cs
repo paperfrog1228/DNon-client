@@ -100,7 +100,7 @@ public class APIClient
     /// <returns></returns>
     public IPromise<UserVO[]> GetUsers()
     {
-        return RestClient.GetArray<UserVO>(serverURL + "/user");
+        return RestClient.GetArray<UserVO>(serverURL + "/user/");
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ public class APIClient
     /// <returns>response : List of channels</returns>
     public IPromise<ChannelVO[]> GetChannelList()
     {
-        return RestClient.GetArray<ChannelVO>(serverURL + "/ch");
+        return RestClient.GetArray<ChannelVO>(serverURL + "/ch/");
     }
 
     /// <summary>
