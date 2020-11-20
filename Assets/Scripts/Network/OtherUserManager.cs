@@ -50,8 +50,6 @@ public class OtherUserManager : MonoBehaviour
     public void SetPlayer(string type) {
         var player = InstantiateUser(type);
         player.transform.GetChild(0).tag = "Player";
-
-        Debug.Log(player.GetComponent<User>()+"  "+ player.GetComponent<Player>());
         player.GetComponent<User>().DestroyThis();
         player.transform.parent= playerTransform;
         var cPlayer = player.GetComponent<Player>();

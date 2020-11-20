@@ -23,8 +23,9 @@ public class Player : User
         float vertical = Input.GetAxis("Vertical");
         if (horizontal != 0 || vertical != 0)
             Run(horizontal, vertical);
+        else animator.SetBool("run", false);
         SetNicknamePosition();
-    }
+     }
 
     #region Damage
     public void ReceiveDamage(int damage) {
@@ -35,7 +36,7 @@ public class Player : User
     protected void Run(float horizontal,float vertical)
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))
-            animator.SetTrigger("run");
+            animator.SetBool("run",true);
 
         if (horizontal > 0)
             SetDirection(0);
