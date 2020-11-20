@@ -35,6 +35,9 @@ public class NetworkManager : MonoBehaviour
         case "notifyNewPlayer":
             InitOtherPlayer(msg_str);
         break;
+            case "receiveAttackChemical":
+            ReceiveAttackChemical(msg_str);
+                break;
               }
     }
 
@@ -60,6 +63,11 @@ public class NetworkManager : MonoBehaviour
         webSocketManager.SendMsg(data);
         StartCoroutine("SendStateCoroutine", frame);
     }
+    public void AttackChemical(Vector2 start, Vector2 target) {
+        var json = new JsonAttack("chemicalAttack");
+        json.SetPos(start, target);
+        webSocketManager.SendMsg(json);
+    }
     #endregion
     #region Stub
     void ReceiveOtherState(string js) {
@@ -75,6 +83,10 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("Connect Allow.");
         onConnect = true;
         UIManager.Instance().SetFalseLoadingPanel();
+    }
+    public void ReceiveAttackChemical(string js) {
+        var json = jsonManager.JsonToObject<JsonAttack>(js);
+        ObjectManager.Instance().AttackChemical(json);
     }
     #endregion
     #endregion
