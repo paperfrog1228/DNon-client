@@ -19,6 +19,7 @@ public class Chemical : Player
         else
             SetDirection(1);
         var flask = Instantiate(Resources.Load("Prefab/flask")) as GameObject;
+        NetworkManager.Instance().AttackChemical(gameObject.transform.position,screenMousePos);
         flask.transform.position = gameObject.transform.position;
         flask.GetComponent<Flask>().targetPos = screenMousePos;
             flask.SetActive(true);

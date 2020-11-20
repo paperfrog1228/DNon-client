@@ -16,15 +16,7 @@ public class User : MonoBehaviour
     private Transform mainBody;
     public  Transform nicknameTransform;
     private Vector3 targetPos;
-    public enum State {
-        idle,
-        run,
-        attack,
-        hurt,
-        die,
-    }
-    public State state;
-    [ShowInInspector]
+       [ShowInInspector]
     public int Hp
     {
         get { return hp; }

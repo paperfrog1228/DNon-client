@@ -60,6 +60,11 @@ public class NetworkManager : MonoBehaviour
         webSocketManager.SendMsg(data);
         StartCoroutine("SendStateCoroutine", frame);
     }
+    public void AttackChemical(Vector2 start, Vector2 target) {
+        var json = new JsonAttack("chemicalAttack");
+        json.SetPos(start, target);
+        webSocketManager.SendMsg(json);
+    }
     #endregion
     #region Stub
     void ReceiveOtherState(string js) {
@@ -75,6 +80,9 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("Connect Allow.");
         onConnect = true;
         UIManager.Instance().SetFalseLoadingPanel();
+    }
+    public void ReceiveAttackChemical(string js) { 
+        
     }
     #endregion
     #endregion
