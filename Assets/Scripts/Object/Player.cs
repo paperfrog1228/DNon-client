@@ -19,12 +19,13 @@ public class Player : User
     }
     protected void Update()
     {
+        SetNicknamePosition();
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         if (horizontal != 0 || vertical != 0)
             Run(horizontal, vertical);
-        else animator.SetBool("run", false);
-        SetNicknamePosition();
+        else Idle();
+
      }
 
     #region Damage
@@ -33,13 +34,15 @@ public class Player : User
     }
     #endregion
     #region Animation
+    protected void Idle() {
+        SetState((int)State.idle);
+    }
     protected void Run(float horizontal,float vertical)
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))
-            animator.SetBool("run",true);
+        SetState((int)State.run);
 
         if (horizontal > 0)
-            SetDirection(0);
+            SetDirection(-1);
         else
             SetDirection(1);
         transform.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
