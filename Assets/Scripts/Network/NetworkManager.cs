@@ -8,6 +8,7 @@ public class NetworkManager : MonoBehaviour
 { 
     [SerializeField] string url="wws://localhost:1228";
     [SerializeField] public int socketID = 9999;
+    [SerializeField,Range(0,0.5f)] private float frame;
     public bool onConnect=false;
     System.Random r=new System.Random();
     WebSocketManager webSocketManager;
@@ -33,7 +34,7 @@ public class NetworkManager : MonoBehaviour
         data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
         data.SetType(type);
         webSocketManager.SendMsg(data);
-        StartCoroutine("SendPosCoroutine", 0.3f);
+        StartCoroutine("SendPosCoroutine", frame);
     }
     private void DecodeMsg(byte[] msg) 
     { 
@@ -58,12 +59,20 @@ public class NetworkManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        var tmp = APIClient.GetClient().PlayerInfo;
-        Debug.Log("My socket id is " + tmp.playerId +""+tmp.playerName);
     }
 
     void Start()
     {
+        if (APIClient.GetClient().PlayerInfo != null)
+        {
+            var tmp = APIClient.GetClient().PlayerInfo;
+            Debug.Log("My socket id is " + tmp.playerId + "" + tmp.playerName);
+            socketID = tmp.playerId;
+        }
+        else {
+            var rand =new System.Random();
+            socketID = rand.Next(0, 100);
+        }
         webSocketManager = WebSocketManager.Instance();
         jsonManager = JsonManager.Instance();
         Connect();

@@ -22,11 +22,9 @@ public class OtherUserManager : MonoBehaviour
     {
         if (json.socketID == NetworkManager.Instance().socketID) return;
         var user = InstantiateUser(json.type);
-        //Debug.Log(socketID+"입장.");
-        user.transform.GetChild(0).GetComponent<Player>().DestroyThis();
-
+        user.GetComponent<Player>().DestroyThis();
         user.transform.parent = otherUserTransform;
-        var cUser = user.transform.GetChild(0).GetComponent<User>();
+        var cUser = user.GetComponent<User>();
         cUser.SetSocketID(json.socketID);
         cUser.SetNickname(json.nickname);
         userList.Add(cUser);
@@ -46,17 +44,17 @@ public class OtherUserManager : MonoBehaviour
                 user = Instantiate(Resources.Load("Prefab/Chemical")) as GameObject;
                 break;
         }
-        user.tag = "Other";
-        user.transform.GetChild(0).tag = "Other";
         user.transform.position = new Vector3(0,0,-10);
         return user;
     }
     public void SetPlayer(string type) {
         var player = InstantiateUser(type);
+        player.transform.GetChild(0).tag = "Player";
+
         Debug.Log(player.GetComponent<User>()+"  "+ player.GetComponent<Player>());
-        player.transform.GetChild(0).GetComponent<User>().DestroyThis();
+        player.GetComponent<User>().DestroyThis();
         player.transform.parent= playerTransform;
-        var cPlayer = player.transform.GetChild(0).GetComponent<Player>();
+        var cPlayer = player.GetComponent<Player>();
         CameraMover.Instance().SetPlayer(player);
         NetworkManager.Instance().Join(cPlayer,type);
     }

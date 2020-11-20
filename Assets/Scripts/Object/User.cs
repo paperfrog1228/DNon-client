@@ -12,6 +12,7 @@ public class User : MonoBehaviour
     [BoxGroup] private string nicknameStr;
     private int hp;
     protected Animator animator;
+    private Transform mainBody;
     [ShowInInspector]
     public int Hp
     {
@@ -19,7 +20,7 @@ public class User : MonoBehaviour
         set
         {
             hp = value;
-            hpbar.SetHpBar(hp);   
+            hpbar.SetHpBar(hp);
         }
     }
     [SerializeField]protected HpBar hpbar;
@@ -38,8 +39,11 @@ public class User : MonoBehaviour
         nickname.transform.parent = UIManager.Instance().NicknamePanel.transform;
         nickname.GetComponent<Text>().text = nicknameStr;
         userTransfrom = this.gameObject.transform;
-        hpbar=transform.parent.GetChild(1).GetComponent<HpBar>();
+        hpbar=transform.GetChild(1).GetComponent<HpBar>();
         Hp = 100;
+        hpbar.SetMaxHp(100);
+        mainBody = transform.GetChild(0);
+        animator =mainBody.GetComponent<Animator>();
     }
     #region Transform&Animation
     protected void SetNicknamePosition() {
@@ -50,15 +54,14 @@ public class User : MonoBehaviour
         userTransfrom.position=new Vector3(vec.x, vec.y, -10);
     }
     /// <summary>
-    /// localscale을 통해 좌우 반전 시킴.
+    /// localscale을 통해 main body만 좌우 반전 시킴.
     /// </summary>
     /// <param name="dir"> 0 == left, 1== right</param>
     protected void SetDirection(int dir) {
-
         if(dir==0)
-        transform.localScale = new Vector3(-1, 1, 1);
+        mainBody.localScale = new Vector3(-1, 1, 1);
         else
-        transform.localScale = new Vector3(1, 1, 1);
+        mainBody.localScale = new Vector3(1, 1, 1);
     }
     #endregion
 }

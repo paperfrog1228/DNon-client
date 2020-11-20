@@ -11,10 +11,11 @@ public class HpBar : MonoBehaviour
     {
         hpFillTransform = transform.GetChild(0);
     }
-
+    public void SetMaxHp(int hp) {
+        maxHp = hp;
+    }
     public void SetHpBar(int hp)
     {
-      //  if (hpFillTransform == null) return;
         currentHp = hp;
         if (currentHp > maxHp) currentHp = maxHp;
         if (currentHp <0) currentHp = 0;

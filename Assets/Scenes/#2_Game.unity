@@ -950,7 +950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f88ad80ff75f542b671d5da2685875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: ws://101.101.217.214:1228
+  url: ws://localhost:1228
   socketID: 1234
   onConnect: 0
 --- !u!4 &1030283227
@@ -1244,7 +1244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.2999878, y: -10.899979}
+  m_AnchoredPosition: {x: 2.2999878, y: -10.899963}
   m_SizeDelta: {x: -239.93433, y: -179.50125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1424301986

@@ -11,12 +11,11 @@ public class ToxicField : MonoBehaviour
     private float startTime;
     private bool trigger = true;
     private bool enter = false;
-    Player player;
+    [SerializeField]Player player;
     public void OnTriggerEnter2D(Collider2D other) {
         if (!other.gameObject.CompareTag("Player")) return;
-        Debug.Log(other.tag);
         enter = true;
-        player = other.gameObject.GetComponent<Player>();
+        player = other.transform.parent.GetComponent<Player>();
         StartCoroutine(DamageCoroutine());
     }
     public void OnTriggerExit2D(Collider2D other)
@@ -26,6 +25,7 @@ public class ToxicField : MonoBehaviour
     IEnumerator DamageCoroutine() {
         while (enter)
         {
+
             player.ReceiveDamage(damage);
             yield return new WaitForSeconds(triggerTime);
         }

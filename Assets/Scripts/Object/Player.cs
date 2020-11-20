@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Sirenix.OdinInspector;
 /// <summary>
 /// Player -> 조종하는 사람
 /// </summary>
@@ -18,14 +17,8 @@ public class Player : User
     {
         instance = this;
     }
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-        base.Start();
-    }
     protected void Update()
     {
-        
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         if (horizontal != 0 || vertical != 0)
@@ -48,8 +41,8 @@ public class Player : User
             SetDirection(0);
         else
             SetDirection(1);
-        transform.parent.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
-        transform.parent.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
+        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontal, Space.World);
+        transform.Translate(Vector3.up  * Time.deltaTime * speed * vertical, Space.World);
     }
     #endregion
     public static Player Instance()

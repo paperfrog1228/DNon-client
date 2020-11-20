@@ -18,7 +18,7 @@ public class WebSocketManager{
         };
         ws.OnMessage += (byte[] msg) =>
         {
-          // Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
+           //Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
             MessageQueue.Enqueue(msg);
          };
 
