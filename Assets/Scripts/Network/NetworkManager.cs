@@ -18,24 +18,6 @@ public class NetworkManager : MonoBehaviour
     public void Connect() {
         webSocketManager.Connect(url);
     }
-    void OtherPosition(string js) {
-        var json = jsonManager.JsonToObject<JsonPosition>(js);
-        OtherUserManager.Instance().SetUserPos(json.socketID, new Vector2(json.x, json.y));
-    }
-    public void Connected(string js) {
-        Debug.Log("Connect Allow.");
-        onConnect = true;
-        UIManager.Instance().SetFalseLoadingPanel();
-    }
-    public void Join(Player player,string type) {
-        this.player = player;
-        player.SetSocketID(socketID);
-        JsonUser data = new JsonUser("join");
-        data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
-        data.SetType(type);
-        webSocketManager.SendMsg(data);
-        StartCoroutine("SendPosCoroutine", frame);
-    }
     private void DecodeMsg(byte[] msg) 
     { 
         string msg_str = Encoding.UTF8.GetString(msg);
@@ -44,8 +26,8 @@ public class NetworkManager : MonoBehaviour
         case "connected":
             Connected(msg_str);
         break;
-        case "otherPosition":
-            OtherPosition(msg_str);
+        case "receiveOtherState":
+            ReceiveOtherState(msg_str);
         break;
         case "initOtherPlayer":
             InitOtherPlayer(msg_str);
@@ -53,8 +35,47 @@ public class NetworkManager : MonoBehaviour
         case "notifyNewPlayer":
             InitOtherPlayer(msg_str);
         break;
-        }
+              }
     }
+
+    #region Proxy&Stub
+    #region Proxy
+    JsonState jsonState;
+    void SendState() {
+        jsonState.SetPos(player.gameObject.transform.position);
+        jsonState.SetHp(player.Hp);
+        jsonState.SetDir((int)player.transform.GetChild(0).localScale.x);
+        jsonState.SetState((int)player.state);
+        webSocketManager.SendMsg(jsonState);
+    }
+    public void Join(Player player,string type) {
+
+        this.player = player;
+        player.SetSocketID(socketID);
+        JsonUser data = new JsonUser("join");
+        data.SetNickname("킹갓형석");//todo: 지훈쿤의 프론트페이지에서 받아와야한다.
+        data.SetType(type);
+        webSocketManager.SendMsg(data);
+        StartCoroutine("SendStateCoroutine", frame);
+    }
+    #endregion
+    #region Stub
+    void ReceiveOtherState(string js) {
+        var json = jsonManager.JsonToObject<JsonState>(js);
+        OtherUserManager.Instance().SetUserState(json);
+    }
+    void InitOtherPlayer(string msg_str) {
+        var json = jsonManager.JsonToObject<JsonUser>(msg_str);
+        OtherUserManager.Instance().InitUser(json);
+    }
+    public void Connected(string js) {
+
+        Debug.Log("Connect Allow.");
+        onConnect = true;
+        UIManager.Instance().SetFalseLoadingPanel();
+    }
+    #endregion
+    #endregion
     #region mono
     private void Awake()
     {
@@ -75,16 +96,8 @@ public class NetworkManager : MonoBehaviour
         }
         webSocketManager = WebSocketManager.Instance();
         jsonManager = JsonManager.Instance();
+        jsonState = new JsonState("sendState");
         Connect();
-    }
-    void InitOtherPlayer(string msg_str) {
-        var json = jsonManager.JsonToObject<JsonUser>(msg_str);
-        OtherUserManager.Instance().InitUser(json);
-    }
-    void SendPos() {
-        var json = new JsonPosition("position");
-        json.SetPos(player.gameObject.transform.position);
-        webSocketManager.SendMsg(json);
     }
     void Update()
     {
@@ -96,10 +109,10 @@ public class NetworkManager : MonoBehaviour
         }
 
     }
-    IEnumerator SendPosCoroutine(float time){
+    IEnumerator SendStateCoroutine(float time){
         while (true)
         {
-            SendPos();
+            SendState();
             yield return new WaitForSeconds(time);
         }
     }
