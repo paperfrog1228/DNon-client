@@ -30,10 +30,14 @@ public class OtherUserManager : MonoBehaviour
         userList.Add(cUser);
         userDic[json.socketID] = cUser;
     }
-    public void SetUserPos(int socketID, Vector2 vec) {
-        if (socketID == NetworkManager.Instance().socketID) return;
-        if (!userDic.ContainsKey(socketID)) return;
-        userDic[socketID].SetPosition(vec);
+    public void SetUserState(JsonState js) {
+        if (js.socketID == NetworkManager.Instance().socketID) return;
+        if (!userDic.ContainsKey(js.socketID)) return;
+        var user = userDic[js.socketID];
+        user.SetPosition(new Vector2(js.x,js.y));
+        user.SetState(js.state);
+        user.SetHp(js.hp);
+        user.SetDir(js.dir);
     }
    
     private GameObject InstantiateUser(string type) {
