@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class UIManager : MonoBehaviour
     public void BtnChemical() {
         OtherUserManager.Instance().SetPlayer("Chemical");
         classPanel.SetActive(false);
+    }
+
+    public void BtnExit()
+    {
+        APIClient.GetClient().DeletePlayer().Then(res =>
+        {
+            SceneManager.LoadScene("#1_Front");
+        });
     }
     #endregion
     #region singleton

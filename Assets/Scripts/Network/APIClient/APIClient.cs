@@ -21,7 +21,7 @@ public class APIClient
 
     private UserVO signedUserInfo;
     private PlayerVO playerInfo;
-    private int currentChannel;
+    private int currentChannel = -1;
 
     /// <summary>
     /// Does the API Client have JWT token?
@@ -227,11 +227,16 @@ public class APIClient
     /// <param name="channelId"></param>
     /// <param name="playerId"></param>
     /// <returns></returns>
-    public IPromise<UniversalServerResponse> DeletePlayer(int channelId, int playerId)
+    public IPromise<UniversalServerResponse> DeletePlayer()
     {
+        if (currentChannel == -1 || PlayerInfo == null)
+        {
+            return null;
+        }
+
         return RestClient.Request<UniversalServerResponse>(new RequestHelper
         {
-            Uri = serverURL + "/ch/" + channelId + "/participants/" + playerId,
+            Uri = serverURL + "/ch/" + currentChannel + "/participants/" + playerInfo.playerId,
             Method = "DELETE"
         });
     }
