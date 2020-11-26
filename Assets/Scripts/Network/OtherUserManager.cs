@@ -22,9 +22,8 @@ public class OtherUserManager : MonoBehaviour
     {
         if (json.socketID == NetworkManager.Instance().socketID) return;
         var user = InstantiateUser(json.type);
-        user.GetComponent<Player>().DestroyThis();
-        user.transform.parent = otherUserTransform;
         var cUser = user.GetComponent<User>();
+        user.transform.parent = otherUserTransform;
         cUser.SetSocketID(json.socketID);
         cUser.SetNickname(json.nickname);
         cUser.gameObject.transform.position = new Vector3(json.x, json.y, -10);
@@ -40,17 +39,10 @@ public class OtherUserManager : MonoBehaviour
         user.SetHp(js.hp);
         user.SetDir(js.dir);
     }
-   
+  
+    //여기서 팩토리 패턴을 쓰면 더 효율적으로 쓰는데 상속을 쓴데 어쩌냐! //enum cc
     private GameObject InstantiateUser(string type) {
-        GameObject user = null;
-        switch (type)
-        {
-            case "Chemical":
-                user = Instantiate(Resources.Load("Prefab/Chemical")) as GameObject;
-                break;
-        }
-        user.transform.position = new Vector3(0,0,-10);
-        return user;
+
     }
     public void ExitUser(int socketID) {
         if (socketID == NetworkManager.Instance().socketID) return;
